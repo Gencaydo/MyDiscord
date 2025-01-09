@@ -1,0 +1,28 @@
+:root {
+  --primary-color: #5865f2;
+  --background-dark: #36393f;
+  --background-darker: #2f3136;
+  --text-color: #dcddde;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Whitney', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  background: var(--background-dark);
+  color: var(--text-color);
+}
+
+input, select, textarea {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+} 
