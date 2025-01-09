@@ -113,10 +113,9 @@ export default defineComponent({
     const roomName = ref('');
     const roomCode = ref('');
 
-    onMounted(async () => {
+    onMounted(() => {
       if (!authStore.isAuthenticated) {
         router.push('/login');
-        return;
       }
     });
 

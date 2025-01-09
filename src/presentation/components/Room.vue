@@ -114,7 +114,7 @@ export default defineComponent({
         if (localVideo.value) {
           const stream = webrtcStore.webrtcService.getLocalStream();
           if (stream) {
-            localVideo.value.srcObject = stream;
+            localVideo.value.srcObject = stream as MediaProvider;
           }
         }
       } catch (error) {

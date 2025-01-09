@@ -1,6 +1,9 @@
 import { defineStore } from 'pinia';
 import { Room } from '@/core/domain/models/Room';
 import { useAuthStore } from './auth';
+import { MockRoomRepository } from '@/infrastructure/repositories/MockRoomRepository';
+
+const roomRepository = new MockRoomRepository();
 
 export const useRoomStore = defineStore('room', {
   state: () => ({

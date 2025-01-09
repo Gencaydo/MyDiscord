@@ -2,6 +2,9 @@ import { defineStore } from 'pinia';
 import { User } from '@/core/domain/models/User';
 import { useRoomStore } from './room';
 import { useWebRTCStore } from './webrtc';
+import { MockUserRepository } from '@/infrastructure/repositories/MockUserRepository';
+
+const userRepository = new MockUserRepository();
 
 interface AuthState {
   user: User | null;
