@@ -69,7 +69,7 @@ export default defineComponent({
           password.value 
         );
         
-        await router.push('/rooms');
+        await router.push('/main');
       } catch (err) {
         error.value = 'Invalid email or password';
       } finally {
