@@ -23,15 +23,27 @@
 
       <!-- Friends Section -->
       <div class="friends-section">
-        <div class="section-item active">
+        <div 
+          class="section-item" 
+          :class="{ active: selectedSection === 'friends' }"
+          @click="selectSection('friends')"
+        >
           <div class="icon">👥</div>
           Friends
         </div>
-        <div class="section-item">
+        <div 
+          class="section-item"
+          :class="{ active: selectedSection === 'nitro' }"
+          @click="selectSection('nitro')"
+        >
           <div class="icon">📩</div>
           Nitro
         </div>
-        <div class="section-item">
+        <div 
+          class="section-item"
+          :class="{ active: selectedSection === 'shop' }"
+          @click="selectSection('shop')"
+        >
           <div class="icon">🏪</div>
           Shop
         </div>
@@ -75,21 +87,36 @@
 
     <!-- Main Content -->
     <div class="main-content">
-      <DirectMessage 
-        v-if="selectedFriend" 
-        :friend="selectedFriend" 
-        @back="selectedFriend = null"
-      />
-      <div v-else class="content-header">
+      <div class="content-header">
         <div class="header-tabs">
           <button class="tab active">Online</button>
           <button class="tab">All</button>
           <button class="tab">Pending</button>
-          <button class="tab">Blocked</button>
+          <button class="tab" @click="showBlockConfirmation">Blocked</button>
           <button class="add-friend">Add Friend</button>
         </div>
       </div>
+
+      <DirectMessage 
+        v-if="selectedFriend" 
+        :friend="selectedFriend" 
+        @back="selectedFriend = null"
+        @block="showBlockConfirmation"
+      />
+      <div v-else-if="selectedSection !== 'friends'" class="empty-section">
+        <p>This section is currently empty</p>
+      </div>
     </div>
+
+    <!-- Add Modal -->
+    <Modal
+      :is-open="showBlockModal"
+      title="Block User"
+      message="Do you want to block this user?"
+      @yes="handleBlockYes"
+      @no="handleBlockNo"
+      @cancel="handleBlockCancel"
+    />
   </div>
 </template>
 
@@ -99,17 +126,21 @@ import { useAuthStore } from '@/stores/auth';
 import DirectMessage from '@/presentation/components/DirectMessage.vue';
 import { User } from '@/core/domain/models/User';
 import { useRouter } from 'vue-router';
+import Modal from '@/presentation/components/Modal.vue';
 
 export default defineComponent({
   name: 'MainPage',
   components: {
-    DirectMessage
+    DirectMessage,
+    Modal
   },
   setup() {
     const authStore = useAuthStore();
     const currentUser = computed(() => authStore.user);
     const selectedFriend = ref<User | null>(null);
     const router = useRouter();
+    const selectedSection = ref('friends');
+    const showBlockModal = ref(false);
 
     const friends = ref<User[]>([
       {
@@ -165,6 +196,29 @@ export default defineComponent({
       router.push('/login');
     };
 
+    const selectSection = (section: string) => {
+      selectedSection.value = section;
+    };
+
+    const showBlockConfirmation = () => {
+      showBlockModal.value = true;
+    };
+
+    const handleBlockYes = () => {
+      // Implement block logic here
+      console.log('User blocked');
+      showBlockModal.value = false;
+    };
+
+    const handleBlockNo = () => {
+      console.log('Block rejected');
+      showBlockModal.value = false;
+    };
+
+    const handleBlockCancel = () => {
+      showBlockModal.value = false;
+    };
+
     return {
       currentUser,
       friends,
@@ -173,7 +227,14 @@ export default defineComponent({
       toggleMute,
       toggleDeafen,
       openSettings,
-      handleLogout
+      handleLogout,
+      selectedSection,
+      selectSection,
+      showBlockModal,
+      showBlockConfirmation,
+      handleBlockYes,
+      handleBlockNo,
+      handleBlockCancel
     };
   }
 });
@@ -379,5 +440,35 @@ export default defineComponent({
 
 .section-item.active {
   background: #404249;
+}
+
+.empty-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #dcddde;
+  text-align: center;
+  padding: 20px;
+}
+
+.empty-section h2 {
+  font-size: 24px;
+  margin-bottom: 12px;
+}
+
+.empty-section p {
+  color: #96989d;
+}
+
+.section-header {
+  padding: 16px;
+}
+
+.section-header h2 {
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
 }
 </style> 

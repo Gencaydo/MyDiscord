@@ -4,17 +4,16 @@
       <button class="mobile-back" @click="$emit('back')">&larr; Back</button>
       <!-- Chat Header -->
       <div class="chat-header">
-        <div class="user-info">
-          <img :src="friend.avatar" :alt="friend.username" class="avatar" />
+        <button class="back-button" @click="$emit('back')">←</button>
+        <img :src="friend.avatar" :alt="friend.username" class="avatar" />
+        <div class="friend-info">
           <span class="username">{{ friend.username }}</span>
-          <span class="status" :class="friend.status"></span>
+          <span class="status" :class="friend.status">{{ friend.status }}</span>
         </div>
         <div class="header-actions">
-          <button class="action-btn">🎥</button>
-          <button class="action-btn">📞</button>
-          <button class="action-btn">📌</button>
-          <button class="action-btn">👥</button>
-          <input type="text" placeholder="Search" class="search-input" />
+          <button class="action-button" @click="$emit('block')">
+            <span class="block-icon">🚫</span>
+          </button>
         </div>
       </div>
 
@@ -87,17 +86,6 @@
           </span>
         </div>
       </div>
-
-      <div class="profile-actions">
-        <button class="profile-action-btn">
-          <span class="icon">🚫</span>
-          Block
-        </button>
-        <button class="profile-action-btn danger">
-          <span class="icon">⚠️</span>
-          Report
-        </button>
-      </div>
     </div>
   </div>
 </template>
@@ -116,7 +104,7 @@ interface Message {
 
 export default defineComponent({
   name: 'DirectMessage',
-  emits: ['back'],
+  emits: ['back', 'block'],
   props: {
     friend: {
       type: Object as PropType<User>,
@@ -156,6 +144,14 @@ export default defineComponent({
       scrollToBottom();
     };
 
+    const showBlockConfirmation = () => {
+      const result = window.confirm('Do you want to block this user?\n\nClick "OK" to block\nClick "Cancel" to cancel');
+      if (result) {
+        // Implement block logic here
+        console.log('User blocked');
+      }
+    };
+
     const scrollToBottom = () => {
       setTimeout(() => {
         if (messagesContainer.value) {
@@ -169,7 +165,8 @@ export default defineComponent({
       messages,
       messagesContainer,
       formatDate,
-      sendMessage
+      sendMessage,
+      showBlockConfirmation
     };
   }
 });
@@ -352,9 +349,9 @@ export default defineComponent({
 }
 
 .header-actions {
+  margin-left: auto;
   display: flex;
-  gap: 16px;
-  align-items: center;
+  gap: 8px;
 }
 
 .action-btn {
@@ -474,5 +471,22 @@ input:focus {
 
 .status.dnd {
   background: #ed4245;
+}
+
+.action-button {
+  background: none;
+  border: none;
+  color: #dcddde;
+  padding: 8px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.action-button:hover {
+  background: #4f545c;
+}
+
+.block-icon {
+  font-size: 16px;
 }
 </style> 
