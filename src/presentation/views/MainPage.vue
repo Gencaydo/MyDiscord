@@ -89,15 +89,6 @@
           <button class="add-friend">Add Friend</button>
         </div>
       </div>
-
-      <div class="active-now">
-        <h2>Active Now</h2>
-        <div class="empty-state">
-          <img src="@/assets/wumpus.png" alt="Wumpus" class="wumpus" />
-          <p>It's quiet for now...</p>
-          <span>When a friend starts an activity—like playing a game or hanging out on voice—we'll show it here!</span>
-        </div>
-      </div>
     </div>
   </div>
 </template>
@@ -348,6 +339,8 @@ export default defineComponent({
   background: #36393f;
   display: flex;
   flex-direction: column;
+  max-height: 100vh;
+  overflow-y: auto;
 }
 
 .content-header {
@@ -382,35 +375,6 @@ export default defineComponent({
   padding: 8px 16px;
   border-radius: 4px;
   cursor: pointer;
-}
-
-.active-now {
-  padding: 16px;
-}
-
-.empty-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 400px;
-  color: #dcddde;
-  text-align: center;
-}
-
-.wumpus {
-  width: 200px;
-  margin-bottom: 16px;
-}
-
-.empty-state p {
-  font-size: 24px;
-  margin-bottom: 8px;
-}
-
-.empty-state span {
-  color: #96989d;
-  max-width: 400px;
 }
 
 .section-item.active {
